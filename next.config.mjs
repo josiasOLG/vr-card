@@ -2,6 +2,16 @@ import { NextFederationPlugin } from "@module-federation/nextjs-mf";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Desabilita SSR para microfrontends
+  output: 'export',
+  trailingSlash: true,
+  reactStrictMode: false,
+  images: {
+    unoptimized: true
+  },
+  experimental: {
+    esmExternals: false,
+  },
   webpack(config) {
      config.plugins.push(
         new NextFederationPlugin({
