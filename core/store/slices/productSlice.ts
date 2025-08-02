@@ -32,12 +32,10 @@ const initialState: ProductState = {
   filters: {}
 }
 
-// Product slice following Redux Toolkit patterns
 export const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    // Loading states
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload
       if (action.payload) {
@@ -50,7 +48,6 @@ export const productSlice = createSlice({
       state.loading = false
     },
 
-    // Product operations
     setProducts: (state, action: PayloadAction<PaginatedResponse<Product>>) => {
       state.products = action.payload.products
       state.pagination = {
@@ -76,7 +73,6 @@ export const productSlice = createSlice({
       state.selectedProduct = action.payload
     },
 
-    // Filter operations
     setFilters: (state, action: PayloadAction<Partial<ProductState['filters']>>) => {
       state.filters = { ...state.filters, ...action.payload }
     },
@@ -85,7 +81,6 @@ export const productSlice = createSlice({
       state.filters = {}
     },
 
-    // Reset state
     resetProductState: () => initialState,
   },
 })

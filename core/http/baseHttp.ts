@@ -59,7 +59,6 @@ export class BaseHttpClient implements IHttpClient {
 
 
   protected handleError(error: unknown): unknown {
-    console.error('HTTP Error:', error)
     return error
   }
   async get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> {

@@ -16,10 +16,8 @@ interface ProductCardProps {
   product: Product;
 }
 
-// Hook seguro que pode falhar graciosamente
 const useSafeCart = () => {
   try {
-    // @ts-expect-error Module federation import
     const { useCart } = require('host/useCart');
     return useCart();
   } catch (error) {
@@ -116,7 +114,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             display: '-webkit-box',
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
-            height: '48px', // Fixar altura para 2 linhas
+            height: '48px', 
             fontSize: '0.95rem',
             color: '#303030',
             lineHeight: 1.3
@@ -136,7 +134,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             display: '-webkit-box',
             WebkitLineClamp: 3,
             WebkitBoxOrient: 'vertical',
-            height: '60px', // Fixar altura para 3 linhas
+            height: '60px',
             fontSize: '0.85rem',
             lineHeight: 1.4
           }}

@@ -23,7 +23,6 @@ export interface PaginatedResponse<T> {
   limit: number
 }
 
-// Interface específica para a resposta da API de produtos
 export interface ProductsApiResponse<T> {
   products: T[]
   total: number
