@@ -10,7 +10,6 @@ function DocumentWrapper({ children }: ClientDocumentProps) {
   return <>{children}</>;
 }
 
-// Carrega o Document apenas no lado do cliente
 const ClientDocument = dynamic(() => Promise.resolve(DocumentWrapper), {
   ssr: false,
 });

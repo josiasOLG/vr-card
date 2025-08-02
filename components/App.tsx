@@ -1,48 +1,69 @@
 'use client';
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Container, Box, Fade } from '@mui/material';
+import { productService } from '../core/http/services/productService';
+import { Product } from '../core/interfaces';
+import { Loading, ErrorDisplay, PageHeader, ProductGrid } from './';
 
 const App = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await productService.getAllProducts({ 
+          limit: 12, 
+          skip: 0 
+        });
+        setProducts(response.products);
+        setTotal(response.total);
+      } catch (err) {
+        setError('Erro ao carregar produtos');
+        console.error('Erro ao buscar produtos:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) return <Loading />;
+  if (error) return <ErrorDisplay message={error} />;
+
   return (
-    <div style={{
-      border: '1px solid #e0e0e0',
-      borderRadius: '8px',
-      padding: '24px',
-      margin: '16px 0',
-      backgroundColor: 'white',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-    }}>
-      <h2 style={{ color: '#1976d2', marginTop: 0 }}>Card Microfrontend</h2>
-      <p style={{ color: '#666', lineHeight: '1.6' }}>
-        Este é um componente de card carregado dinamicamente como microfrontend.
-        Ele pode conter qualquer conteúdo ou funcionalidade específica.
-      </p>
-      <div style={{
-        backgroundColor: '#f5f5f5',
-        padding: '16px',
-        borderRadius: '4px',
-        marginTop: '16px'
-      }}>
-        <h3 style={{ margin: '0 0 8px 0', color: '#333' }}>Funcionalidades:</h3>
-        <ul style={{ margin: 0, paddingLeft: '20px', color: '#666' }}>
-          <li>Carregamento dinâmico</li>
-          <li>Isolamento de dependências</li>
-          <li>Desenvolvimento independente</li>
-          <li>Deploy separado</li>
-        </ul>
-      </div>
-      <button style={{
-        backgroundColor: '#1976d2',
-        color: 'white',
-        border: 'none',
-        padding: '10px 20px',
-        borderRadius: '4px',
-        marginTop: '16px',
-        cursor: 'pointer'
-      }}>
-        Ação do Card
-      </button>
-    </div>
+    <Box 
+      sx={{
+        minHeight: '100vh',
+        backgroundColor: '#f5f7f9',
+        position: 'relative',
+      }}
+    >
+      <Container 
+        maxWidth="xl" 
+        sx={{ 
+          position: 'relative', 
+          zIndex: 1,
+          py: { xs: 3, sm: 4 }
+        }}
+      >
+        <Fade in={true} timeout={600}>
+          <Box>
+            <PageHeader 
+              title="Catálogo de Produtos"
+              subtitle="Microfrontend de Produtos"
+              description={`Total de ${total} produtos disponíveis`}
+            />
+            <ProductGrid products={products} />
+          </Box>
+        </Fade>
+      </Container>
+    </Box>
   );
 };
 
